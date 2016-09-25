@@ -22,7 +22,7 @@ defmodule PhoenixAndElm.LobbyChannel do
 
     case contact do
       nil ->
-        {:reply, {:error, %{reason: "Contact no found"}}, socket}
+        {:reply, {:error, %{error: "Contact no found"}}, socket}
       _ ->
         {:reply, {:ok, %{contact: contact}}, socket}
     end

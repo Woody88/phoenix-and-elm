@@ -2,7 +2,6 @@ module Update exposing (..)
 
 import Types exposing (Msg(..))
 import Model exposing (..)
-import Contact.Model
 import Contacts.Update
 import Contact.Update
 
@@ -27,3 +26,6 @@ update msg model =
                 ( { model | contact = updatedContact }
                 , Cmd.map ContactMsg cmd
                 )
+
+        UpdateState newState ->
+            { model | state = newState } ! []

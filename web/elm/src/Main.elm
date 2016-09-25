@@ -7,8 +7,10 @@ import Contact.Model
 import Update exposing (..)
 import Types exposing (Msg(..))
 import Routing exposing (Route)
-import Commands exposing (fetch)
 import Routing exposing (..)
+import Subscriptions exposing (..)
+import Contacts.Update exposing (fetchContacts)
+import Contact.Update exposing (fetchContact)
 
 
 init : Result String Route -> ( Model, Cmd Msg )
@@ -20,11 +22,6 @@ init result =
         urlUpdate result (initialModel currentRoute)
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
-
-
 urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
 urlUpdate result model =
     let
@@ -33,13 +30,22 @@ urlUpdate result model =
     in
         case currentRoute of
             ContactsRoute ->
-                ( { model | route = currentRoute, contact = Contact.Model.initialModel }, Cmd.map ContactsMsg (fetch model.contacts.search model.contacts.page_number) )
+                ( { model
+                    | route = currentRoute
+                    , contact = Contact.Model.initialModel
+                  }
+                , Cmd.map ContactsMsg (fetchContacts model.contacts.search model.contacts.page_number)
+                )
 
             ContactRoute id ->
-                ( { model | route = currentRoute }, Cmd.map ContactMsg (Commands.fetchContact id) )
+                ( { model | route = currentRoute }
+                , Cmd.map ContactMsg (fetchContact id)
+                )
 
             _ ->
-                ( { model | route = currentRoute }, Cmd.none )
+                ( { model | route = currentRoute }
+                , Cmd.none
+                )
 
 
 main : Program Never

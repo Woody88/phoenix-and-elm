@@ -1,7 +1,6 @@
 module Contacts.Types exposing (..)
 
-import Contacts.Model exposing (..)
-import Http
+import Json.Decode as JD
 
 
 type Msg
@@ -9,8 +8,8 @@ type Msg
     | Paginate Int
     | SearchInput String
     | FormSubmit
-    | FetchSucceed Model
-    | FetchError Http.Error
+    | FetchSucceed JD.Value
+    | FetchError JD.Value
     | Reset
     | ShowContacts
     | ShowContact Int

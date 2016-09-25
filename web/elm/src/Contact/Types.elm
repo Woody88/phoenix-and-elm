@@ -1,10 +1,9 @@
 module Contact.Types exposing (..)
 
-import Contact.Model exposing (..)
-import Http
+import Json.Decode as JD
 
 
 type Msg
     = FetchContact Int
-    | FetchContactSucceed Model
-    | FetchContactError Http.Error
+    | FetchContactSucceed JD.Value
+    | FetchContactError JD.Value
