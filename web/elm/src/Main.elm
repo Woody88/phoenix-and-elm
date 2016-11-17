@@ -3,57 +3,30 @@ module Main exposing (..)
 import Navigation
 import View exposing (view)
 import Model exposing (..)
-import Contact.Model
 import Update exposing (..)
 import Types exposing (Msg(..))
-import Routing exposing (Route)
 import Routing exposing (..)
-import Subscriptions exposing (..)
-import Contacts.Update exposing (fetchContacts)
-import Contact.Update exposing (fetchContact)
 
 
-init : Result String Route -> ( Model, Cmd Msg )
-init result =
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
     let
         currentRoute =
-            Routing.routeFromResult result
+            Routing.parse location
     in
-        urlUpdate result (initialModel currentRoute)
+        urlUpdate currentRoute (initialModel currentRoute)
 
 
-urlUpdate : Result String Route -> Model -> ( Model, Cmd Msg )
-urlUpdate result model =
-    let
-        currentRoute =
-            Routing.routeFromResult result
-    in
-        case currentRoute of
-            ContactsRoute ->
-                ( { model
-                    | route = currentRoute
-                    , contact = Contact.Model.initialModel
-                  }
-                , Cmd.map ContactsMsg (fetchContacts model.contacts.search model.contacts.page_number)
-                )
-
-            ContactRoute id ->
-                ( { model | route = currentRoute }
-                , Cmd.map ContactMsg (fetchContact id)
-                )
-
-            _ ->
-                ( { model | route = currentRoute }
-                , Cmd.none
-                )
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    Navigation.program Routing.parser
+    Navigation.program UrlChange
         { init = init
         , view = view
         , update = update
-        , urlUpdate = urlUpdate
         , subscriptions = subscriptions
         }

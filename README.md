@@ -2,7 +2,13 @@
 
 ![Contacts](https://monosnap.com/file/14nD2kWbnvcuBh5a9L9XifX0GQ0OqQ.png)
 
+## Phoenix Channels version
+https://github.com/bigardone/phoenix-and-elm/tree/phoenix-channels
 
+## Live demo
+https://phoenix-and-elm.herokuapp.com/
+
+## Instructions
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
