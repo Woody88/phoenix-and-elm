@@ -6,7 +6,8 @@ import Contact.Model
 import Contacts.Update
 import Contact.Update
 import Routing exposing (..)
-import Commands exposing (..)
+import Contacts.Update exposing (fetchContacts)
+import Contact.Update exposing (fetchContact)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -37,15 +38,27 @@ update msg model =
                 , Cmd.map ContactMsg cmd
                 )
 
+        UpdateState newState ->
+            { model | state = newState } ! []
+
 
 urlUpdate : Route -> Model -> ( Model, Cmd Msg )
 urlUpdate currentRoute model =
     case currentRoute of
         ContactsRoute ->
-            ( { model | route = currentRoute, contact = Contact.Model.initialModel }, Cmd.map ContactsMsg (Commands.fetch model.contacts.search model.contacts.page_number) )
+            ( { model
+                | route = currentRoute
+                , contact = Contact.Model.initialModel
+              }
+            , Cmd.map ContactsMsg (fetchContacts model.contacts.search model.contacts.page_number)
+            )
 
         ContactRoute id ->
-            ( { model | route = currentRoute }, Cmd.map ContactMsg (Commands.fetchContact id) )
+            ( { model | route = currentRoute }
+            , Cmd.map ContactMsg (fetchContact id)
+            )
 
         _ ->
-            ( { model | route = currentRoute }, Cmd.none )
+            ( { model | route = currentRoute }
+            , Cmd.none
+            )

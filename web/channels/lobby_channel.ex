@@ -3,9 +3,13 @@ defmodule PhoenixAndElm.LobbyChannel do
   alias PhoenixAndElm.{Contact, Repo}
   import Ecto.Query
 
+  require Logger
+
   def join("lobby", _, socket), do: {:ok, socket}
 
   def handle_in("contacts", params, socket) do
+    Logger.info "Handling contacts..."
+
     search = Map.get(params, "search") || ""
 
     page = Contact
@@ -17,6 +21,8 @@ defmodule PhoenixAndElm.LobbyChannel do
   end
 
   def handle_in("contact:" <> contact_id, _, socket) do
+    Logger.info "Handling contact..."
+
     contact = Contact
     |> Repo.get(contact_id)
 

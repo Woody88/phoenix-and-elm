@@ -6,6 +6,7 @@ import Model exposing (..)
 import Update exposing (..)
 import Types exposing (Msg(..))
 import Routing exposing (..)
+import Subscriptions exposing (subscriptions)
 
 
 init : Navigation.Location -> ( Model, Cmd Msg )
@@ -15,11 +16,6 @@ init location =
             Routing.parse location
     in
         urlUpdate currentRoute (initialModel currentRoute)
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
 
 
 main : Program Never Model Msg
